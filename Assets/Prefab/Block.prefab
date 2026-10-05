@@ -186,6 +186,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2315807773714989812}
+  - component: {fileID: 6126315142701535359}
+  - component: {fileID: 11918476043659333}
   m_Layer: 0
   m_Name: Block
   m_TagString: Untagged
@@ -213,6 +215,39 @@ Transform:
   - {fileID: 6369120849172031930}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6126315142701535359
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8778513148941361471}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.95, y: 0.95, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11918476043659333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8778513148941361471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eac2f269160004197da30f731872d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParentBrick
 --- !u!1001 &375541833460483495
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -221,6 +256,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2315807773714989812}
     m_Modifications:
+    - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
+      propertyPath: _brick
+      value: 
+      objectReference: {fileID: 11918476043659333}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -291,6 +330,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2315807773714989812}
     m_Modifications:
+    - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
+      propertyPath: _brick
+      value: 
+      objectReference: {fileID: 11918476043659333}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -361,6 +404,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2315807773714989812}
     m_Modifications:
+    - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
+      propertyPath: _brick
+      value: 
+      objectReference: {fileID: 11918476043659333}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -431,6 +478,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2315807773714989812}
     m_Modifications:
+    - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
+      propertyPath: _brick
+      value: 
+      objectReference: {fileID: 11918476043659333}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalScale.x
       value: 1

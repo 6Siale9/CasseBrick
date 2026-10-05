@@ -7,8 +7,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private int _howMany;
     [SerializeField] private GameObject[] _toSpawn;
     [SerializeField] private int[] _toSpawnWeight;
-    [SerializeField] private Tester[] _testers;
-    private EDirection _blockedDir = EDirection.None;
+    private EDirection _blockedDir = EDirection.NONE;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,12 +24,11 @@ public class Spawner : MonoBehaviour
 
     private void Move()
     {
-        EDirection dir = EDirection.None;
+        EDirection dir = EDirection.NONE;
         dir = CheckForDirections();
-        if (dir != EDirection.None)
+        if (dir != EDirection.NONE)
         {
             Spawn();
-            ResetTesters();
             Advance(dir);
         }
         else
@@ -41,29 +39,38 @@ public class Spawner : MonoBehaviour
 
     private EDirection CheckForDirections()
     {
-        List<Tester> goodTesters = new List<Tester>(_testers);
-        foreach (Tester tester in _testers)
+        LayerMask mask = 0;
+        bool up = !Physics2D.Raycast(gameObject.transform.position, Vector3.up, 1.4f);
+        bool down = !Physics2D.Raycast(gameObject.transform.position, Vector3.down, 1.4f);
+        bool right = !Physics2D.Raycast(gameObject.transform.position, Vector3.right, 1.4f);
+        bool left = !Physics2D.Raycast(gameObject.transform.position, Vector3.left, 1.4f);
+        Debug.Log(up + " " + down + " " + right + " " + left);
+        List<EDirection> list = new List<EDirection>();
+        if (up)
         {
-            if (tester.Dispo)
-            {
-                if (tester.Slot == _blockedDir)
-                {
-                    goodTesters.Remove(tester);
-                }
-            }
-            else
-            {
-                goodTesters.Remove(tester);
-            }
+            list.Add(EDirection.UP);
         }
-        if (goodTesters.Count > 0)
+        if (down)
         {
-            int i = Random.Range(0, goodTesters.Count);
-            return goodTesters[i].Slot;
+            list.Add(EDirection.DOWN);
+        }
+        if (right)
+        {
+            list.Add(EDirection.RIGHT);
+        }
+        if (left)
+        {
+            list.Add(EDirection.LEFT);
+        }
+        if (list.Count > 0)
+        {
+            EDirection returnedvalue = list[Random.Range(0, list.Count)];
+            Debug.Log(returnedvalue.ToString());
+            return returnedvalue;
         }
         else
         {
-            return EDirection.None;
+            return EDirection.NONE;
         }
     }
 
@@ -80,7 +87,7 @@ public class Spawner : MonoBehaviour
         {
             if (random < _toSpawnWeight[slot])
             {
-                Instantiate(_toSpawn[slot]);
+                Instantiate(_toSpawn[slot], gameObject.transform.position, Quaternion.identity);
             }
             else
             {
@@ -89,31 +96,23 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void ResetTesters()
-    {
-        foreach (Tester tester in _testers)
-        {
-            tester.Dispo = true;
-        }
-    }
-
     private void Advance(EDirection dir)
     {
         switch (dir)
         {
-            case EDirection.None:
+            case EDirection.NONE:
                 Debug.Log("Wrong Enum in Spawner at 105");
                 break;
-            case EDirection.Up:
+            case EDirection.UP:
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 1, 0);
                 break;
-            case EDirection.Down:
+            case EDirection.DOWN:
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 1, 0);
                 break;
-            case EDirection.Left:
+            case EDirection.LEFT:
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x - 1, gameObject.transform.position.y, 0);
                 break;
-            case EDirection.Right:
+            case EDirection.RIGHT:
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x + 1, gameObject.transform.position.y, 0);
                 break;
         }
@@ -121,6 +120,10 @@ public class Spawner : MonoBehaviour
         if (_howMany > 0)
         {
             Move();
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -132,9 +135,9 @@ public class Spawner : MonoBehaviour
 
 public enum EDirection
 {
-    Up,
-    Down,
-    Left,
-    Right,
-    None
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NONE
 }

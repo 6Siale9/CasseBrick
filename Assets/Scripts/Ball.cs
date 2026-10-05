@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        GlobalManager.Instance.Balls.Add(this);
         _rb = GetComponent<Rigidbody2D>();
         _rb.linearVelocity = _up * _speed;
     }
@@ -24,30 +25,30 @@ public class Ball : MonoBehaviour
         Bouncer b = collision.GetComponent<Bouncer>();
         if (b != null)
         {
+            _speed += 0.3f;
+            b.Activate();
             float f = Vector2.Angle(_rb.linearVelocity, b.RightAngle);
             Debug.Log(f);
-            _rb.linearVelocity = Vector2.Reflect(_rb.linearVelocity, b.RightAngle).normalized * _speed;
-            /*
-            Debug.Log("Bounce");
-            gameObject.transform.up = -gameObject.transform.up;
-            _up = gameObject.transform.up;
-            _rb.linearVelocity = _up * _speed;
-            
-            float f = Vector2.Angle(_rb.linearVelocity, b.RightAngle);
-            f /= 360f;
-
-            gameObject.transform.rotation = new Quaternion(0,
-                                                0,
-                                                transform.rotation.z + f,
-                                                1);
-
-            Debug.Log(gameObject.transform.rotation);
-            Debug.Log(f);
-            Debug.Log(gameObject.transform.rotation);
-            
-            _up = gameObject.transform.up;
-            _rb.linearVelocity = _up * _speed;
-            */
+            Vector2 vector = Vector2.Reflect(_rb.linearVelocity, b.RightAngle).normalized * _speed;
+            vector = Rotate(vector, Random.Range(-0.1f, 0.1f));
+            _rb.linearVelocity = vector;
         }
+    }
+
+    public void SeekingBall(ParentBrick brick)
+    {
+        Vector2 origin = gameObject.transform.position;
+        Vector2 target = brick.gameObject.transform.position;
+        Vector2 dir = target - origin;
+        _rb.linearVelocity = dir.normalized * _speed;
+        Debug.Log("Seeking");
+    }
+
+    private Vector2 Rotate(Vector2 v, float delta)
+    {
+        return new Vector2(
+            v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta),
+            v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
+        );
     }
 }
