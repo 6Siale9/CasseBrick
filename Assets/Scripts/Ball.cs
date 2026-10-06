@@ -22,7 +22,7 @@ public class Ball : MonoBehaviour
         ChildTransformLogic();
     }
 
-    private void ChildTransformLogic()
+    protected void ChildTransformLogic()
     {
         _child.transform.up = _rb.linearVelocity.normalized;
         _child.transform.localScale = new Vector3(1, 1 + _speed/15, 1);
