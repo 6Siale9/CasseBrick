@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56eac2f269160004197da30f731872d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParentBrick
+  _img: {fileID: 5017375978505757747}
 --- !u!1001 &375541833460483495
 PrefabInstance:
   m_ObjectHideFlags: 0

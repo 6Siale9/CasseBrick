@@ -5,6 +5,8 @@ public class Ball : MonoBehaviour
     private Vector2 _up = Vector2.up;
     private Rigidbody2D _rb;
     [SerializeField] private float _speed;
+    [SerializeField] private float _maxSpeed;
+    [SerializeField] private GameObject _child;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,7 +19,13 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        ChildTransformLogic();
+    }
+
+    private void ChildTransformLogic()
+    {
+        _child.transform.up = _rb.linearVelocity.normalized;
+        _child.transform.localScale = new Vector3(1, 1 + _speed/15, 1);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,10 +33,10 @@ public class Ball : MonoBehaviour
         Bouncer b = collision.GetComponent<Bouncer>();
         if (b != null)
         {
-            if (_speed < 50)
+            if (_speed < _maxSpeed)
             {
                 _speed += 0.3f;
-                _speed = Mathf.Clamp(_speed, 0, 50);
+                _speed = Mathf.Clamp(_speed, 0, _maxSpeed);
             }
             float f = Vector2.Angle(_rb.linearVelocity, b.RightAngle);
             Vector2 vector = Vector2.Reflect(_rb.linearVelocity, b.RightAngle).normalized * _speed;
