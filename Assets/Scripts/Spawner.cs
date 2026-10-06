@@ -7,22 +7,43 @@ public class Spawner : MonoBehaviour
     [SerializeField] private int _howMany;
     [SerializeField] private GameObject[] _toSpawn;
     [SerializeField] private int[] _toSpawnWeight;
-    private EDirection _blockedDir = EDirection.NONE;
+    [SerializeField] private float _spawnTimeThreshold;
+    private float _spawnTime;
+    private bool _canSpawn = true;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Move();
+        GlobalManager.Instance.Spawners.Add(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        AdvanceLogic();
     }
 
-    private void Move()
+    private void AdvanceLogic()
+    {
+        if (_spawnTime < _spawnTimeThreshold && _canSpawn)
+        {
+            _spawnTime += Time.deltaTime;
+        }
+        else
+        {
+            _spawnTime = 0;
+            Advance();
+        }
+    }
+
+    public void Move()
+    {
+        _canSpawn = true;
+    }
+
+    private void Advance()
     {
         EDirection dir = EDirection.NONE;
         dir = CheckForDirections();
@@ -44,7 +65,6 @@ public class Spawner : MonoBehaviour
         bool down = !Physics2D.Raycast(gameObject.transform.position, Vector3.down, 1.4f);
         bool right = !Physics2D.Raycast(gameObject.transform.position, Vector3.right, 1.4f);
         bool left = !Physics2D.Raycast(gameObject.transform.position, Vector3.left, 1.4f);
-        Debug.Log(up + " " + down + " " + right + " " + left);
         List<EDirection> list = new List<EDirection>();
         if (up)
         {
@@ -65,7 +85,6 @@ public class Spawner : MonoBehaviour
         if (list.Count > 0)
         {
             EDirection returnedvalue = list[Random.Range(0, list.Count)];
-            Debug.Log(returnedvalue.ToString());
             return returnedvalue;
         }
         else
@@ -123,13 +142,14 @@ public class Spawner : MonoBehaviour
         }
         else
         {
+            GlobalManager.Instance.Spawners.Remove(this);
             Destroy(gameObject);
         }
     }
 
     private void Wait()
     {
-
+        _canSpawn = false;
     }
 }
 

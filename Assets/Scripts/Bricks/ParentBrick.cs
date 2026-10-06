@@ -18,6 +18,7 @@ public class ParentBrick : MonoBehaviour
         else if (_hp == 1)
         {
             GlobalManager.Instance.Bricks.Remove(this);
+            GlobalManager.Instance.AllSpawnerMove();
             Destroy(gameObject);
         }
     }

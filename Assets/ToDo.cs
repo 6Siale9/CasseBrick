@@ -1,10 +1,10 @@
 /*
 
-Wall bounce = Ball counter. When counter = X -> Ball seeks closest brick
-Explosive brick -> On kill : Destroy surrounding bricks
+Second world border to escape soft lock
+Increase hitbox size with speed
 Parry
 Perfect parry
+Explosive brick -> On kill : Destroy surrounding bricks
 Feedback (gdoc + spawner creates / dies)
-Spawner resumes spawning when free
 
 */

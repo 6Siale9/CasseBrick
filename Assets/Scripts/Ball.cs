@@ -25,13 +25,16 @@ public class Ball : MonoBehaviour
         Bouncer b = collision.GetComponent<Bouncer>();
         if (b != null)
         {
-            _speed += 0.3f;
-            b.Activate();
+            if (_speed < 50)
+            {
+                _speed += 0.3f;
+                _speed = Mathf.Clamp(_speed, 0, 50);
+            }
             float f = Vector2.Angle(_rb.linearVelocity, b.RightAngle);
-            Debug.Log(f);
             Vector2 vector = Vector2.Reflect(_rb.linearVelocity, b.RightAngle).normalized * _speed;
             vector = Rotate(vector, Random.Range(-0.1f, 0.1f));
             _rb.linearVelocity = vector;
+            b.Activate();
         }
     }
 
@@ -41,7 +44,6 @@ public class Ball : MonoBehaviour
         Vector2 target = brick.gameObject.transform.position;
         Vector2 dir = target - origin;
         _rb.linearVelocity = dir.normalized * _speed;
-        Debug.Log("Seeking");
     }
 
     private Vector2 Rotate(Vector2 v, float delta)
