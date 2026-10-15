@@ -2810,6 +2810,7 @@ MonoBehaviour:
   _speed: 5
   _maxSpeed: 70
   _child: {fileID: 592061053}
+  _howManyRays: 10
 --- !u!4 &1942960038
 Transform:
   m_ObjectHideFlags: 0
