@@ -4,6 +4,7 @@ using UnityEngine;
 public class Bouncer : MonoBehaviour
 {
     [SerializeField] private ParentBrick _brick;
+    [SerializeField] private Palet _palet;
     [SerializeField] private bool _stop = false;
     private Vector2 _rightAngle;
 
@@ -25,6 +26,10 @@ public class Bouncer : MonoBehaviour
         {
             _brick.TakeDamage();
             GlobalManager.Instance.ResetBounce();
+        }
+        else if (_palet != null)
+        {
+            _palet.Bounce();
         }
         else
         {

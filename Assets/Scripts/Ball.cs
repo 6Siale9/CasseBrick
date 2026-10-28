@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private Vector2 _up = Vector2.up;
     //private Rigidbody2D _rb;
     [SerializeField] private float _speed;
     [SerializeField] private float _maxSpeed;
@@ -26,7 +25,7 @@ public class Ball : MonoBehaviour
     {
         GlobalManager.Instance.Balls.Add(this);
         Vector2 v = new Vector2(Random.Range(-1f, 1), 1).normalized * 100;
-        v = new Vector2(1, 1);
+        v = new Vector2(0, -1);
         NewDest(transform.position, v);
     }
 
@@ -71,7 +70,18 @@ public class Ball : MonoBehaviour
                     _stopTimeThreshold = 0.01f;
                 }
                 _stop = true;
-                NewDest(transform.position, _newDir);
+                /*
+                A faire !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                if ()
+                {
+                    NewDest(transform.position, _newDir);
+                }
+                else
+                {
+                    NewDest(transform.position, _newDir);
+                }
+                */
             }
             else
             {
@@ -86,7 +96,7 @@ public class Ball : MonoBehaviour
         if (!_stop)
         {
             _child.transform.up = _dir.normalized;
-            _child.transform.localScale = new Vector3(1, 1 + _speed / 15, 1);
+            _child.transform.localScale = new Vector3(1, 1 + _speed / 25, 1);
         }
         else
         {
@@ -94,10 +104,22 @@ public class Ball : MonoBehaviour
             _child.transform.localScale = new Vector3(2.5f, 1, 1);
         }
     }
+
+    public void NewSpeed(float value, bool addOn)
+    {
+        if (addOn)
+        {
+            _speed += value;
+        }
+        else
+        {
+            _speed = value;
+        }
+        _speed = Mathf.Clamp(_speed, 0, _maxSpeed);
+    }
+
     private void NewDest(Vector2 origin, Vector2 direction)
     {
-        _speed += 8;
-        _speed = Mathf.Clamp(_speed, 0, _maxSpeed);
         _dir = direction;
         RaycastHit2D[] rcH = Physics2D.RaycastAll(origin, direction);
         Ray2D r = new Ray2D(origin, direction);
