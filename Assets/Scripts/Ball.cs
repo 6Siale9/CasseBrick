@@ -35,8 +35,18 @@ public class Ball : MonoBehaviour
         ChildTransformLogic();
         AdvanceLogic();
         StopLogic();
-    }
 
+
+
+
+
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("greg");
+        }
+    }
     private void StopLogic()
     {
         if (_stop)
@@ -70,6 +80,7 @@ public class Ball : MonoBehaviour
                     _stopTimeThreshold = 0.01f;
                 }
                 _stop = true;
+                NewDest(transform.position, _newDir);
                 /*
                 A faire !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

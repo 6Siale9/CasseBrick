@@ -35,9 +35,12 @@ public class Palet : MonoBehaviour
 
     private void InputLogic()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _state == EpaletState.INACTIVE)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            _state = EpaletState.PERFECT;
+            if (_state == EpaletState.INACTIVE)
+            {
+                _state = EpaletState.PERFECT;
+            }
         }
     }
 

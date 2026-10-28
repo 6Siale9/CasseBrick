@@ -152,7 +152,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &36339613
 Transform:
   m_ObjectHideFlags: 0
@@ -427,7 +427,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &128332526
 Transform:
   m_ObjectHideFlags: 0
@@ -1353,7 +1353,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &355085909
 Transform:
   m_ObjectHideFlags: 0
@@ -1505,7 +1505,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &378139489
 Transform:
   m_ObjectHideFlags: 0
@@ -2014,7 +2014,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &462923848
 Transform:
   m_ObjectHideFlags: 0
@@ -2064,7 +2064,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &498419744
 Transform:
   m_ObjectHideFlags: 0
@@ -2530,7 +2530,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &546431777
 Transform:
   m_ObjectHideFlags: 0
@@ -2730,7 +2730,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &573721849
 Transform:
   m_ObjectHideFlags: 0
@@ -2849,7 +2849,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &623305212
 Transform:
   m_ObjectHideFlags: 0
@@ -2994,7 +2994,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &636761106
 Transform:
   m_ObjectHideFlags: 0
@@ -3044,7 +3044,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &648271854
 Transform:
   m_ObjectHideFlags: 0
@@ -3346,7 +3346,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &696959001
 Transform:
   m_ObjectHideFlags: 0
@@ -3944,7 +3944,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &780621169
 Transform:
   m_ObjectHideFlags: 0
@@ -4265,7 +4265,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!1 &886652668
 GameObject:
   m_ObjectHideFlags: 0
@@ -4479,7 +4479,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &952758309
 Transform:
   m_ObjectHideFlags: 0
@@ -4631,7 +4631,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &981145763
 Transform:
   m_ObjectHideFlags: 0
@@ -5172,7 +5172,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &1133082160
 Transform:
   m_ObjectHideFlags: 0
@@ -5222,7 +5222,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &1159836299
 Transform:
   m_ObjectHideFlags: 0
@@ -5457,7 +5457,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &1211217792
 Transform:
   m_ObjectHideFlags: 0
@@ -5590,7 +5590,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &1224995436
 Transform:
   m_ObjectHideFlags: 0
@@ -5742,7 +5742,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &1266998581
 Transform:
   m_ObjectHideFlags: 0
@@ -5792,7 +5792,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &1267106732
 Transform:
   m_ObjectHideFlags: 0
@@ -7967,7 +7967,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &1935768387
 Transform:
   m_ObjectHideFlags: 0
@@ -8493,7 +8493,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &1978305798
 Transform:
   m_ObjectHideFlags: 0
@@ -8543,7 +8543,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &2003775411
 Transform:
   m_ObjectHideFlags: 0
@@ -8770,7 +8770,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &2036127540
 Transform:
   m_ObjectHideFlags: 0
@@ -8895,7 +8895,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &2084817789
 Transform:
   m_ObjectHideFlags: 0
@@ -8945,7 +8945,7 @@ MonoBehaviour:
   _toSpawn:
   - {fileID: 8778513148941361471, guid: 3141988e387f18844961728127be5a62, type: 3}
   _toSpawnWeight: 01000000
-  _spawnTimeThreshold: 0.01
+  _spawnTimeThreshold: 0.05
 --- !u!4 &2087733673
 Transform:
   m_ObjectHideFlags: 0
