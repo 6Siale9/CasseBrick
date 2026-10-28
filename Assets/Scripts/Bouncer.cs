@@ -4,14 +4,19 @@ using UnityEngine;
 public class Bouncer : MonoBehaviour
 {
     [SerializeField] private ParentBrick _brick;
-
+    [SerializeField] private bool _stop = false;
     private Vector2 _rightAngle;
 
     public Vector2 RightAngle { get => _rightAngle; set => _rightAngle = value; }
+    public bool Stop { get => _stop; set => _stop = value; }
 
     void Start()
     {
         _rightAngle = -gameObject.transform.up;
+        if (_brick != null)
+        {
+            Stop = true;
+        }
     }
 
     public void Activate()
