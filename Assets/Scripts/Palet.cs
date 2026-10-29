@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using TMPro;
 
 public class Palet : MonoBehaviour
 {
@@ -14,12 +16,36 @@ public class Palet : MonoBehaviour
     [SerializeField] private Color _cdColor = Color.white;
     [SerializeField] private Color _inactiveColor = Color.white;
     [SerializeField] private Image _image;
-    [SerializeField] private int _score = 0;
+    [SerializeField] private float _score = 0;
+    [SerializeField] private List<Image> _sliders = new List<Image>();
+    [SerializeField] private Image _background;
+    [SerializeField] private float _hurtTimeThreshold;
+    private float _hurtTime;
+    [SerializeField] private TMP_Text _scoreTxt;
+    private float _scoreShakeDeltaX = 0;
+    private float _scoreShakeDeltaY = 0;
+    private float _scoreShakeTime = 0;
+    [SerializeField] private float _scoreShakeTimeThreshold = 0;
+    
+    
+    
+    
+    
+    
+    
+    
+    [SerializeField] private float _mult = 0;
+
+
+
+
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -31,6 +57,99 @@ public class Palet : MonoBehaviour
         }
         ColorLogic();
         InputLogic();
+        SliderLogic();
+        TxtLogic();
+        BackGroundColorLogic();
+    }
+
+    private void TxtLogic()
+    {
+        float s = Mathf.Round(_score);
+        _scoreTxt.text = s.ToString();
+
+        if (_scoreShakeTime < _scoreShakeTimeThreshold)
+        {
+            _scoreShakeTime += Time.deltaTime;
+            float f = _score * .02f;
+            _scoreShakeTimeThreshold = Mathf.Clamp(
+
+                _score * .02f,
+                0.01f,
+                999
+
+                );
+            
+
+            if (_scoreTxt.rectTransform.localPosition.x < _scoreShakeDeltaX)
+            {
+                _scoreTxt.rectTransform.localPosition = new Vector2(
+                    
+                    Mathf.Clamp(_scoreTxt.rectTransform.localPosition.x + (Time.deltaTime * _score * 1f), -1, _scoreShakeDeltaX),
+                    _scoreTxt.rectTransform.localPosition.y
+                    
+                    );
+
+            }
+            else if (_scoreTxt.rectTransform.localPosition.x > _scoreShakeDeltaX)
+            {
+                _scoreTxt.rectTransform.localPosition = new Vector2(
+                    
+                    Mathf.Clamp(_scoreTxt.rectTransform.localPosition.x - (Time.deltaTime  * _score * 1f), _scoreShakeDeltaX, 1),
+                    _scoreTxt.rectTransform.localPosition.y
+                    
+                    );
+
+            }
+            else
+            {
+                _scoreShakeDeltaX = Random.Range(-_score / 100f, _score / 100f);
+            }
+
+
+            if (_scoreTxt.rectTransform.localPosition.y < _scoreShakeDeltaY)
+            {
+                _scoreTxt.rectTransform.localPosition = new Vector2(
+
+                    _scoreTxt.rectTransform.localPosition.x,
+                    Mathf.Clamp(_scoreTxt.rectTransform.localPosition.y + (Time.deltaTime * _score * 1f), -1, _scoreShakeDeltaY)
+                    
+                    ); 
+            }
+            else if (_scoreTxt.rectTransform.localPosition.y > _scoreShakeDeltaY)
+            {
+                _scoreTxt.rectTransform.localPosition = new Vector2(
+                    
+                    _scoreTxt.rectTransform.localPosition.x,
+                    Mathf.Clamp(_scoreTxt.rectTransform.localPosition.y - (Time.deltaTime * _score * 1f), _scoreShakeDeltaY, 1)
+                    
+                    );
+            }
+            else
+            {
+                _scoreShakeDeltaY = Random.Range(-_score / 100f, _score / 100f);
+            }
+        }
+        else
+        {
+            _scoreTxt.rectTransform.localPosition = new Vector2(0, 0);
+        }
+    }
+
+    private void BackGroundColorLogic()
+    {
+        if (_hurtTime < _hurtTimeThreshold)
+        {
+            _hurtTime += Time.deltaTime;
+            _background.color = new Color(0.4f, 0, 0, _hurtTimeThreshold - _hurtTime);
+        }
+    }
+
+    private void SliderLogic()
+    {
+        foreach (Image img in _sliders)
+        {
+            img.fillAmount = GlobalManager.Instance.Ball.StopTime / GlobalManager.Instance.Ball.StopTimeThreshold;
+        }
     }
 
     private void InputLogic()
@@ -110,24 +229,26 @@ public class Palet : MonoBehaviour
 
     public void Bounce()
     {
-        foreach (Ball ball in GlobalManager.Instance.Balls)
+        switch (_state)
         {
-            switch (_state)
-            {
-                default:
-                case EpaletState.ACTIVE:
-                    ball.NewSpeed(1, true);
-                    break;
-                case EpaletState.PERFECT:
-                    ball.NewSpeed(6, true);
-                    _score += 1;
-                    break;
-                case EpaletState.INACTIVE:
-                case EpaletState.ONCOOLDOWN:
-                    ball.NewSpeed(6, false);
-                    _score -= 1;
-                    break;
-            }
+            default:
+            case EpaletState.ACTIVE:
+                GlobalManager.Instance.Ball.NewSpeed(1, true);
+                _score += 1;
+                _scoreShakeTime = 0;
+                break;
+            case EpaletState.PERFECT:
+                GlobalManager.Instance.Ball.NewSpeed(6, true);
+                _score += 10;
+                _scoreShakeTime = 0;
+                break;
+            case EpaletState.INACTIVE:
+            case EpaletState.ONCOOLDOWN:
+                GlobalManager.Instance.Ball.Speed /= 1.5f;
+                _score /= 1.5f;
+                _hurtTime = 0;
+                _scoreShakeTime = 0;
+                break;
         }
         _state = EpaletState.INACTIVE;
         _activeTime = 0;

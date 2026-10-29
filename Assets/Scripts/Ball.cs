@@ -19,11 +19,16 @@ public class Ball : MonoBehaviour
     private bool _stop = false;
     private float _stopTime = 0;
     private float _stopTimeThreshold = 0;
+    private int _bounce = 0;
+    [SerializeField] private int _bounceThreshold;
+    public float StopTime { get => _stopTime; set => _stopTime = value; }
+    public float StopTimeThreshold { get => _stopTimeThreshold; set => _stopTimeThreshold = value; }
+    public float Speed { get => _speed; set => _speed = value; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GlobalManager.Instance.Balls.Add(this);
+        GlobalManager.Instance.Ball = this;
         Vector2 v = new Vector2(Random.Range(-1f, 1), 1).normalized * 100;
         v = new Vector2(0, -1);
         NewDest(transform.position, v);
@@ -35,17 +40,6 @@ public class Ball : MonoBehaviour
         ChildTransformLogic();
         AdvanceLogic();
         StopLogic();
-
-
-
-
-
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("greg");
-        }
     }
     private void StopLogic()
     {
@@ -73,30 +67,44 @@ public class Ball : MonoBehaviour
                 _target.Activate();
                 if (_target.Stop)
                 {
-                    _stopTimeThreshold = _speed / _maxSpeed;
+                    _stopTimeThreshold = Speed * 5 / _maxSpeed; // ?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
                 }
                 else
                 {
-                    _stopTimeThreshold = 0.01f;
+                    _stopTimeThreshold = .1f; // ???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
                 }
                 _stop = true;
-                NewDest(transform.position, _newDir);
-                /*
-                A faire !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-                if ()
+                if (_bounce < _bounceThreshold)
                 {
+                    if (_target.AddBounce)
+                    {
+                        _bounce++;
+                    }
+                    else
+                    {
+                        _bounce = 0;
+                    }
                     NewDest(transform.position, _newDir);
                 }
                 else
                 {
-                    NewDest(transform.position, _newDir);
+                    _bounce = 0;
+                    if (GlobalManager.Instance.Bricks.Count != 0)
+                    {
+                        Vector2 origin = transform.position;
+                        Vector2 destination = GlobalManager.Instance.Bricks[Random.Range(0, GlobalManager.Instance.Bricks.Count)].gameObject.transform.position;
+                        Vector2 dir = destination - origin;
+                        NewDest(transform.position, dir);
+                    }
+                    else
+                    {
+                        NewDest(transform.position, _newDir);
+                    }
                 }
-                */
             }
             else
             {
-                float step = _speed * Time.deltaTime;
+                float step = Speed * Time.deltaTime;
                 transform.position = Vector2.MoveTowards(transform.position, _destination, step);
             }
         }
@@ -107,7 +115,7 @@ public class Ball : MonoBehaviour
         if (!_stop)
         {
             _child.transform.up = _dir.normalized;
-            _child.transform.localScale = new Vector3(1, 1 + _speed / 25, 1);
+            _child.transform.localScale = new Vector3(1, 1 + Speed / 25, 1);
         }
         else
         {
@@ -120,13 +128,13 @@ public class Ball : MonoBehaviour
     {
         if (addOn)
         {
-            _speed += value;
+            Speed += value;
         }
         else
         {
-            _speed = value;
+            Speed = value;
         }
-        _speed = Mathf.Clamp(_speed, 0, _maxSpeed);
+        Speed = Mathf.Clamp(Speed, 0, _maxSpeed);
     }
 
     private void NewDest(Vector2 origin, Vector2 direction)
