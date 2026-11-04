@@ -5,3 +5,12 @@ public enum EpaletState
     ONCOOLDOWN,
     INACTIVE
 }
+
+public enum EDirection
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NONE
+}

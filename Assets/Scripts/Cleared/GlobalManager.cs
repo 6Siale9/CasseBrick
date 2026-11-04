@@ -20,9 +20,10 @@ public class GlobalManager : MonoBehaviour
     }
     #endregion Instance
 
-    private Ball _ball;
-    private List<ParentBrick> _bricks = new List<ParentBrick>();
-    private List<Spawner> _spawners = new List<Spawner>();
+    private Ball _ball; //Current active ball
+    private List<ParentBrick> _bricks = new List<ParentBrick>(); //Current active bricks
+    private List<Spawner> _spawners = new List<Spawner>(); //Current active Spawners (only relevent if Spawners don't explode when cornered
+    
     public Ball Ball { get => _ball; set => _ball = value; }
     public List<ParentBrick> Bricks { get => _bricks; set => _bricks = value; }
     public List<Spawner> Spawners { get => _spawners; set => _spawners = value; }

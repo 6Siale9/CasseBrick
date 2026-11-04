@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 6126315142701535359}
   - component: {fileID: 11918476043659333}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -258,6 +258,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2315807773714989812}
     m_Modifications:
     - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
+      propertyPath: _stop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: _brick
       value: 
       objectReference: {fileID: 11918476043659333}
@@ -267,7 +271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalPosition.x
@@ -332,6 +336,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2315807773714989812}
     m_Modifications:
     - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
+      propertyPath: _stop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: _brick
       value: 
       objectReference: {fileID: 11918476043659333}
@@ -341,7 +349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalPosition.x
@@ -406,6 +414,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2315807773714989812}
     m_Modifications:
     - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
+      propertyPath: _stop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: _brick
       value: 
       objectReference: {fileID: 11918476043659333}
@@ -415,7 +427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalPosition.x
@@ -480,6 +492,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2315807773714989812}
     m_Modifications:
     - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
+      propertyPath: _stop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 986800819110332868, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: _brick
       value: 
       objectReference: {fileID: 11918476043659333}
@@ -489,7 +505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 1736019379941721351, guid: c52bdcda180ae69478b1ea54d8a3f0be, type: 3}
       propertyPath: m_LocalPosition.x
