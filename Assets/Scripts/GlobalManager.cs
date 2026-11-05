@@ -35,6 +35,10 @@ public class GlobalManager : MonoBehaviour
 
     public void AllSpawnerMove()
     {
+        if (_bricks.Count <= 0 && _spawners.Count <= 0)
+        {
+            EndGame();
+        }
         if (_spawners.Count > 0)
         {
             foreach (Spawner spawner in _spawners)  
@@ -42,5 +46,10 @@ public class GlobalManager : MonoBehaviour
                 spawner.Move();
             }
         }
+    }
+
+    private void EndGame()
+    {
+        Time.timeScale = 0;
     }
 }

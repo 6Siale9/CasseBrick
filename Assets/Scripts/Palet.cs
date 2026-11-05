@@ -12,6 +12,7 @@ public class Palet : MonoBehaviour
     [SerializeField] private float _activeTimeThreshold = 0; //Threshold for Active
     [SerializeField] private float _cd = 0; //Threshold for OnCooldown
     private float _activeTime = 0; //Value
+    private float _savedValue = 0; //For CoyoteTime
     
     [Header("Visible")]
     [SerializeField] private Color _perfectColor = Color.white; //When the palette is in perfect state
@@ -24,11 +25,19 @@ public class Palet : MonoBehaviour
     [SerializeField] private List<Image> _bars = new List<Image>(); //Bars to fill on hitstop
     
     [Header("Effects")]
-    [SerializeField] private Image _background; //Image
+    [SerializeField] private Image _backgroundD; //Image for damage
     [SerializeField] private float _hurtTimeThreshold; //Time for red flash
-    private float _hurtTime; //Value
+    private float _hurtTime = 999; //Value
+    [SerializeField] private Image _backgroundP; //Image for perfect
+    [SerializeField] private float _pTimeThreshold; //Time for white flash
+    private float _pTime = 999; //Value
 
     #region method
+    void Start()
+    {
+        _savedValue = _perfectTimeThreshold;
+    }
+
     void Update()
     {
         if (_state != EpaletState.INACTIVE)
@@ -46,7 +55,12 @@ public class Palet : MonoBehaviour
         if (_hurtTime < _hurtTimeThreshold)
         {
             _hurtTime += Time.deltaTime;
-            _background.color = new Color(0.4f, 0, 0, _hurtTimeThreshold - _hurtTime);
+            _backgroundD.color = new Color(0.4f, 0, 0, _hurtTimeThreshold - _hurtTime);
+        }
+        if (_pTime < _pTimeThreshold)
+        {
+            _pTime += Time.deltaTime;
+            _backgroundP.color = new Color(1, 1, 1, _pTimeThreshold - _pTime);
         }
     }
 
@@ -65,6 +79,8 @@ public class Palet : MonoBehaviour
             if (_state == EpaletState.INACTIVE)
             {
                 _state = EpaletState.PERFECT;
+                ActiveLogic();
+                CheckForBall();
             }
         }
     }
@@ -133,29 +149,41 @@ public class Palet : MonoBehaviour
         }
     }
 
+    private void CheckForBall()
+    {
+        if (GlobalManager.Instance.Ball.transform.position.y <= -6.25f && GlobalManager.Instance.Ball.Target.Palet != null)
+        {
+            _perfectTimeThreshold = 999f;
+        }
+    }
+
     public void Bounce()
     {
         switch (_state)
         {
             default:
             case EpaletState.ACTIVE:
-                GlobalManager.Instance.Ball.Speed += 1;
-                ScoreManager.Instance.Score += 1;
+                GlobalManager.Instance.Ball.Speed += 3;
+                ScoreManager.Instance.Score += 5;
                 ScoreManager.Instance.ScoreShakeTime = 0;
                 break;
             case EpaletState.PERFECT:
-                GlobalManager.Instance.Ball.Speed += 6;
-                ScoreManager.Instance.Score += 10;
+                GlobalManager.Instance.Ball.Speed += 3;
+                ScoreManager.Instance.Score += 5;
                 ScoreManager.Instance.ScoreShakeTime = 0;
+                ScoreManager.Instance.Mult += 1;
+                _pTime = 0;
                 break;
             case EpaletState.INACTIVE:
             case EpaletState.ONCOOLDOWN:
-                GlobalManager.Instance.Ball.Speed /= 1.5f;
-                ScoreManager.Instance.Score /= 1.5f;
-                _hurtTime = 0;
+                GlobalManager.Instance.Ball.Speed = 5f;
+                ScoreManager.Instance.Score = 0;
                 ScoreManager.Instance.ScoreShakeTime = 0;
+                ScoreManager.Instance.Mult = 0;
+                _hurtTime = 0;
                 break;
         }
+        _perfectTimeThreshold = _savedValue;
         _state = EpaletState.INACTIVE;
         _activeTime = 0;
     }

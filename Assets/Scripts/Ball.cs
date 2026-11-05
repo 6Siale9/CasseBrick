@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using TMPro;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Ball : MonoBehaviour
 {
@@ -14,6 +17,7 @@ public class Ball : MonoBehaviour
     private Vector2 _dir; //Direcction to _destination for stepping
     private Vector2 _newDir; //Next direction after bounce
     private Bouncer _target; //Target to activate on bounce
+    private Vector2 _normal; //Normal of _target
     
     [Header("StretchAndSquash")]
     [SerializeField] private GameObject _child; //Object to stretch
@@ -29,6 +33,9 @@ public class Ball : MonoBehaviour
     private int _bounce = 0; //Number of bounces since last collision with a brick
     [SerializeField] private int _bounceThreshold; //Number of bounces required for SeekingBall()
 
+    [Header("Particles")]
+    [SerializeField] private Particle _particle;
+
     [Header("Other")]
     [SerializeField] private float _waitAtSpawn; //Time before the ball move at spawn
     #endregion Attribut
@@ -36,6 +43,9 @@ public class Ball : MonoBehaviour
     public float StopTime { get => _stopTime; set => _stopTime = value; }
     public float StopTimeThreshold { get => _stopTimeThreshold; set => _stopTimeThreshold = value; }
     public float Speed { get => _speed; set => _speed = value; }
+    public int Bounce { get => _bounce; set => _bounce = value; }
+    public Vector2 NewDir { get => _newDir; set => _newDir = value; }
+    public Bouncer Target { get => _target; set => _target = value; }
 
     #region Method
     void Start()
@@ -73,11 +83,17 @@ public class Ball : MonoBehaviour
         {
             if (transform.position.x == _destination.x && transform.position.y == _destination.y) //Activate if ball is at destination
             {
-                _squashDir = _target.RightAngle;
-                _target.Activate();
+                _squashDir = _normal;
+                Target.Activate();
+                Particle();
 
                 #region Stop
-                if (_target.Stop)
+                if (_bounce == _bounceThreshold -1 && Target.AddBounce)
+                {
+                    _stopTimeThreshold = Speed * 30 / _maxSpeed; // Big rebounce for seeking ball ??????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? 
+                    _stop = true;
+                }
+                else if (Target.Stop)
                 {
                     _stopTimeThreshold = Speed * 5 / _maxSpeed; // Pause for long rebounce ?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
                 }
@@ -85,25 +101,28 @@ public class Ball : MonoBehaviour
                 {
                     _stopTimeThreshold = _stopTimeThresholdFast; // Pause for fast rebounce
                 }
-                _stop = true;
+                if (_stopTimeThreshold >= _stopTimeThresholdFast)
+                {
+                    _stop = true;
+                }
                 #endregion Stop
 
                 #region Bounce
-                if (_bounce < _bounceThreshold)
+                if (Target.AddBounce)
                 {
-                    if (_target.AddBounce)
-                    {
-                        _bounce++;
-                    }
-                    else
-                    {
-                        _bounce = 0;
-                    }
-                    NewDest(transform.position, _newDir);
+                    Bounce++;
                 }
                 else
                 {
-                    _bounce = 0;
+                    Bounce = 0;
+                }
+
+                if (Bounce < _bounceThreshold)
+                {
+                    NewDest(transform.position, NewDir);
+                }
+                else
+                {
                     if (GlobalManager.Instance.Bricks.Count != 0)
                     {
                         Vector2 origin = transform.position;
@@ -113,7 +132,7 @@ public class Ball : MonoBehaviour
                     }
                     else
                     {
-                        NewDest(transform.position, _newDir);
+                        NewDest(transform.position, NewDir);
                     }
                 }
                 #endregion Bounce
@@ -173,10 +192,11 @@ public class Ball : MonoBehaviour
                     if (f > 0.02)
                     {
                         _destination = rcH[i].point;
-                        _newDir = Vector2.Reflect(direction, rcH[i].normal);
-                        _newDir = Rotate(_newDir, Random.Range(-0.1f, 0.1f));
+                        _normal = rcH[i].normal;
+                        NewDir = Vector2.Reflect(direction, _normal);
+                        NewDir = Rotate(NewDir, Random.Range(-0.1f, 0.1f));
                         center = false;
-                        _target = b;
+                        Target = b;
                         break;
                     }
                 }
@@ -192,6 +212,63 @@ public class Ball : MonoBehaviour
         }
     }
 
+    public void Rebound()
+    {
+        _squashDir = _normal;
+        Target.Activate();
+        Particle();
+
+        #region Stop
+        if (_bounce == _bounceThreshold - 1 && Target.AddBounce)
+        {
+            _stopTimeThreshold = Speed * 30 / _maxSpeed; // Big rebounce for seeking ball ??????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? 
+            _stop = true;
+        }
+        else if (Target.Stop)
+        {
+            _stopTimeThreshold = Speed * 5 / _maxSpeed; // Pause for long rebounce ?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+        }
+        else
+        {
+            _stopTimeThreshold = _stopTimeThresholdFast; // Pause for fast rebounce
+        }
+        if (_stopTimeThreshold >= _stopTimeThresholdFast)
+        {
+            _stop = true;
+        }
+        #endregion Stop
+
+        #region Bounce
+        if (Target.AddBounce)
+        {
+            Bounce++;
+        }
+        else
+        {
+            Bounce = 0;
+        }
+
+        if (Bounce < _bounceThreshold)
+        {
+            NewDest(transform.position, NewDir);
+        }
+        else
+        {
+            if (GlobalManager.Instance.Bricks.Count != 0)
+            {
+                Vector2 origin = transform.position;
+                Vector2 destination = GlobalManager.Instance.Bricks[Random.Range(0, GlobalManager.Instance.Bricks.Count)].gameObject.transform.position;
+                Vector2 dir = destination - origin;
+                NewDest(transform.position, dir);
+            }
+            else
+            {
+                NewDest(transform.position, NewDir);
+            }
+        }
+        #endregion Bounce
+    }
+
     private void GoToCenter() //Failsafe method if Raycast fails to get out of a corner
     {
         Vector2 origin = transform.position;
@@ -200,15 +277,23 @@ public class Ball : MonoBehaviour
         NewDest(origin, dir);
     }
 
+    private void Particle()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            Particle p = Instantiate(_particle, transform.position, Quaternion.identity);
+            p.MaxForce = 200f;
+            p.MinForce = 20f;
+        }
+    }
+
     #region Tool
     private Vector2 Rotate(Vector2 v, float delta)
     {
-        return v;
-        /*
         return new Vector2(
             v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta),
             v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
-        );*/
+        );
     }
     #endregion Tool
     #endregion Method

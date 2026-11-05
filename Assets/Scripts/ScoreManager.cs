@@ -24,6 +24,8 @@ public class ScoreManager : MonoBehaviour
     private float _bestScore = 0; //Highest value of _score this game
     [SerializeField] private TMP_Text _scoreTxt; //TMP_Text for _score
     [SerializeField] private TMP_Text _bestScoreTxt; //TMP_Text for _bestScore
+    [SerializeField] private TMP_Text _multTxt; //TMP_Text for _mult
+    private int _mult = 0; //Multiplicator for points
     private float _scoreShakeDeltaX = 0; //Value
     private float _scoreShakeDeltaY = 0; //Value
     private float _scoreShakeTime = 0; //Value
@@ -31,6 +33,7 @@ public class ScoreManager : MonoBehaviour
 
     public float Score { get => _score; set => _score = value; }
     public float ScoreShakeTime { get => _scoreShakeTime; set => _scoreShakeTime = value; }
+    public int Mult { get => _mult; set => _mult = value; }
 
     private void Awake()
     {
@@ -47,6 +50,8 @@ public class ScoreManager : MonoBehaviour
         {
             _bestScore = _score;
         }
+
+        _multTxt.text = "x" + Mult.ToString();
 
         float s = Mathf.Round(_score);
         float bs = Mathf.Round(_bestScore);
