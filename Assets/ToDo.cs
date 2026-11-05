@@ -4,6 +4,10 @@ Feedback (gdoc + spawner creates / dies)
 Tuto filling bar
 Systeme combo
 
+Last brick = Something
+Bar retracts
+Perfect locks to full (?)
+Sounds
 
 
 
