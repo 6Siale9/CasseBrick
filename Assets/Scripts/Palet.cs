@@ -163,20 +163,20 @@ public class Palet : MonoBehaviour
         {
             default:
             case EpaletState.ACTIVE:
-                GlobalManager.Instance.Ball.Speed += 3;
-                ScoreManager.Instance.Score += 5;
+                GlobalManager.Instance.Ball.Speed += 10;
+                ScoreManager.Instance.Score += 10;
                 ScoreManager.Instance.ScoreShakeTime = 0;
                 break;
             case EpaletState.PERFECT:
-                GlobalManager.Instance.Ball.Speed += 3;
-                ScoreManager.Instance.Score += 5;
+                GlobalManager.Instance.Ball.Speed += 10;
+                ScoreManager.Instance.Score += 12;
                 ScoreManager.Instance.ScoreShakeTime = 0;
                 ScoreManager.Instance.Mult += 1;
                 _pTime = 0;
                 break;
             case EpaletState.INACTIVE:
             case EpaletState.ONCOOLDOWN:
-                GlobalManager.Instance.Ball.Speed = 5f;
+                GlobalManager.Instance.Ball.Speed = 10f;
                 ScoreManager.Instance.Score = 0;
                 ScoreManager.Instance.ScoreShakeTime = 0;
                 ScoreManager.Instance.Mult = 0;

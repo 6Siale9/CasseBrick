@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BrickSimple
   _hp: 1
   _img: {fileID: 7123750820716451189}
-  _color: {r: 0.5, g: 0.5, b: 0, a: 1}
+  _color: {r: 0.5, g: 0, b: 0, a: 1}
   _particle: {fileID: 3062608271884578773, guid: 67a903786aa2ed4429508b06e35fff17, type: 3}
 --- !u!114 &1807121050215066472
 MonoBehaviour:
