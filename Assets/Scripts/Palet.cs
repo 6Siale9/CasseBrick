@@ -68,7 +68,14 @@ public class Palet : MonoBehaviour
     {
         foreach (Image img in _bars)
         {
-            img.fillAmount = GlobalManager.Instance.Ball.StopTime / GlobalManager.Instance.Ball.StopTimeThreshold;
+            if (GlobalManager.Instance.Ball.StopTimeThreshold > GlobalManager.Instance.Ball.StopTimeThresholdFast)
+            {
+                img.fillAmount = GlobalManager.Instance.Ball.StopTime / GlobalManager.Instance.Ball.StopTimeThreshold;
+            }
+            else
+            {
+                img.fillAmount = 0;
+            }
         }
     }
 
@@ -171,7 +178,7 @@ public class Palet : MonoBehaviour
                 GlobalManager.Instance.Ball.Speed += 10;
                 ScoreManager.Instance.Score += 12;
                 ScoreManager.Instance.ScoreShakeTime = 0;
-                ScoreManager.Instance.Mult += 1;
+                ScoreManager.Instance.Mult += 3;
                 _pTime = 0;
                 break;
             case EpaletState.INACTIVE:

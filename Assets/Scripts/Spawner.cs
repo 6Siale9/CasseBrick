@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private int _howMany; //How many bricks to spawn
     [SerializeField] private GameObject[] _toSpawn; //Possible bricks to spawn
+    [SerializeField] private Transform _brickParent; //Brick container
     [SerializeField] private int[] _toSpawnWeight; //Chances of each bricks to be spawned
     [SerializeField] private float _spawnTimeThreshold; //Time of pause between each spawn
     private float _spawnTime; //Value
@@ -104,7 +105,7 @@ public class Spawner : MonoBehaviour
         {
             if (random < _toSpawnWeight[slot])
             {
-                Instantiate(_toSpawn[slot], gameObject.transform.position, Quaternion.identity);
+                Instantiate(_toSpawn[slot], gameObject.transform.position, Quaternion.identity, _brickParent);
                 break;
             }
             else
