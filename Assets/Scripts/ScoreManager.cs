@@ -94,6 +94,7 @@ public class ScoreManager : MonoBehaviour
             else
             {
                 _scoreShakeDeltaX = Random.Range(-_score / 100f, _score / 100f);
+                _scoreShakeDeltaX = Mathf.Clamp(_scoreShakeDeltaX, -3f, 3f);
             }
 
 
@@ -118,6 +119,7 @@ public class ScoreManager : MonoBehaviour
             else
             {
                 _scoreShakeDeltaY = Random.Range(-_score / 100f, _score / 100f);
+                _scoreShakeDeltaY = Mathf.Clamp(_scoreShakeDeltaY, -3f, 3f);
             }
         }
         else

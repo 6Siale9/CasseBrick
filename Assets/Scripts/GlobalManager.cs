@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GlobalManager : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class GlobalManager : MonoBehaviour
     private Ball _ball; //Current active ball
     private List<ParentBrick> _bricks = new List<ParentBrick>(); //Current active bricks
     private List<Spawner> _spawners = new List<Spawner>(); //Current active Spawners (only relevent if Spawners don't explode when cornered
+    private float _flipThreshold;
+    private float _flipValue;
+    private int _flipCount;
     
     public Ball Ball { get => _ball; set => _ball = value; }
     public List<ParentBrick> Bricks { get => _bricks; set => _bricks = value; }
@@ -31,6 +35,38 @@ public class GlobalManager : MonoBehaviour
     private void Awake()
     {
         TrySetInstance();
+    }
+
+    private void Update()
+    {
+        FlipLogic();
+    }
+
+    private void FlipLogic()
+    {
+        if (_flipValue < _flipThreshold)
+        {
+            _flipValue += Time.deltaTime;
+        }
+        else
+        {
+            _flipValue = 0;
+            _flipThreshold = Random.Range(0f, 0.75f);
+            _flipCount = 1;//_bricks.Count / 10;
+            Flip();
+        }
+    }
+
+    private void Flip()
+    {
+        for (int i = 0; i < _flipCount; i++)
+        {
+            int n = Random.Range(0, _bricks.Count);
+            if (n != 0)
+            {
+                _bricks[n].Img.rectTransform.up = new Vector3(1, 1, 0);
+            }
+        }
     }
 
     public void AllSpawnerMove()

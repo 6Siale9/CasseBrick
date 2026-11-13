@@ -5,17 +5,18 @@ using UnityEngine.UI;
 public abstract class ParentBrick : MonoBehaviour
 {
     [SerializeField] protected int _hp = 2;
-    protected int _maxHp = 2;
-    [SerializeField] protected Image _img;
+    private int _maxHp = 2;
+    [SerializeField] private Image _img;
     [SerializeField] protected Color _color;
-    [SerializeField] protected Particle _particle;
+    [SerializeField] private Particle _particle;
 
+    public Image Img { get => _img; set => _img = value; }
 
     protected void Start()
     {
         GlobalManager.Instance.Bricks.Add(this);
         _maxHp = _hp;
-        transform.up = new Vector3(1, 1, 0);
+        Img.rectTransform.up = new Vector3(1, 1, 0);
     }
 
     protected void Update()
@@ -26,118 +27,118 @@ public abstract class ParentBrick : MonoBehaviour
 
     private void OrientationLogic()
     {
-        if (transform.up != Vector3.right)
+        if (_img.rectTransform.up != Vector3.right)
         {
-            transform.up = new Vector3(
+            _img.rectTransform.up = new Vector3(
 
-                transform.up.x,
-                Mathf.Clamp(transform.up.y - (Time.deltaTime * 1.25f), 0, 1),
-                transform.up.z
+                _img.rectTransform.up.x,
+                Mathf.Clamp(_img.rectTransform.up.y - (Time.deltaTime * 1.25f), 0, 1),
+                _img.rectTransform.up.z
 
                 );
 
         }
     }
 
-    protected void DamageLogic()
+    private void DamageLogic()
     {
-        if (_img.color != _color)
+        if (Img.color != _color)
         {
             #region R
-            if (_img.color.r < _color.r) //+
+            if (Img.color.r < _color.r) //+
             {
-                _img.color = new Color(
+                Img.color = new Color(
 
-                    Mathf.Clamp(_img.color.r + Time.deltaTime, 0 , _color.r),
-                    _img.color.g,
-                    _img.color.b,
-                    _img.color.a
+                    Mathf.Clamp(Img.color.r + Time.deltaTime, 0 , _color.r),
+                    Img.color.g,
+                    Img.color.b,
+                    Img.color.a
 
                     );
             }
-            else if (_img.color.r > _color.r) //-
+            else if (Img.color.r > _color.r) //-
             {
-                _img.color = new Color(
+                Img.color = new Color(
 
-                    Mathf.Clamp(_img.color.r - Time.deltaTime, _color.r, 1),
-                    _img.color.g,
-                    _img.color.b,
-                    _img.color.a
+                    Mathf.Clamp(Img.color.r - Time.deltaTime, _color.r, 1),
+                    Img.color.g,
+                    Img.color.b,
+                    Img.color.a
 
                     );
             }
             #endregion R
 
             #region G
-            if (_img.color.g < _color.g) //+
+            if (Img.color.g < _color.g) //+
             {
-                _img.color = new Color(
+                Img.color = new Color(
 
-                    _img.color.r,
-                    Mathf.Clamp(_img.color.g + Time.deltaTime, 0, _color.g),
-                    _img.color.b,
-                    _img.color.a
+                    Img.color.r,
+                    Mathf.Clamp(Img.color.g + Time.deltaTime, 0, _color.g),
+                    Img.color.b,
+                    Img.color.a
 
                     );
             }
-            else if (_img.color.g > _color.g) //-
+            else if (Img.color.g > _color.g) //-
             {
-                _img.color = new Color(
+                Img.color = new Color(
 
-                    _img.color.r,
-                    Mathf.Clamp(_img.color.g - Time.deltaTime, _color.g, 1),
-                    _img.color.b,
-                    _img.color.a
+                    Img.color.r,
+                    Mathf.Clamp(Img.color.g - Time.deltaTime, _color.g, 1),
+                    Img.color.b,
+                    Img.color.a
 
                     );
             }
             #endregion G
 
             #region B
-            if (_img.color.b < _color.b) //+
+            if (Img.color.b < _color.b) //+
             {
-                _img.color = new Color(
+                Img.color = new Color(
 
-                    _img.color.r,
-                    _img.color.g,
-                    Mathf.Clamp(_img.color.b + Time.deltaTime, 0, _color.b),
-                    _img.color.a
+                    Img.color.r,
+                    Img.color.g,
+                    Mathf.Clamp(Img.color.b + Time.deltaTime, 0, _color.b),
+                    Img.color.a
 
                     );
             }
-            else if (_img.color.b > _color.b) //-
+            else if (Img.color.b > _color.b) //-
             {
-                _img.color = new Color(
+                Img.color = new Color(
 
-                    _img.color.r,
-                    _img.color.g,
-                    Mathf.Clamp(_img.color.b - Time.deltaTime, _color.b, 1),
-                    _img.color.a
+                    Img.color.r,
+                    Img.color.g,
+                    Mathf.Clamp(Img.color.b - Time.deltaTime, _color.b, 1),
+                    Img.color.a
 
                     );
             }
             #endregion B
 
             #region A
-            if (_img.color.a < _color.a) //+
+            if (Img.color.a < _color.a) //+
             {
-                _img.color = new Color(
+                Img.color = new Color(
 
-                    _img.color.r,
-                    _img.color.g,
-                    _img.color.b,
-                    Mathf.Clamp(_img.color.a + Time.deltaTime, 0, _color.a)
+                    Img.color.r,
+                    Img.color.g,
+                    Img.color.b,
+                    Mathf.Clamp(Img.color.a + Time.deltaTime, 0, _color.a)
 
                     );
             }
-            else if (_img.color.a > _color.a) //-
+            else if (Img.color.a > _color.a) //-
             {
-                _img.color = new Color(
+                Img.color = new Color(
 
-                    _img.color.r,
-                    _img.color.g,
-                    _img.color.b,
-                    Mathf.Clamp(_img.color.a - Time.deltaTime, _color.a, 1)
+                    Img.color.r,
+                    Img.color.g,
+                    Img.color.b,
+                    Mathf.Clamp(Img.color.a - Time.deltaTime, _color.a, 1)
 
                     );
             }
@@ -162,7 +163,7 @@ public abstract class ParentBrick : MonoBehaviour
         Activate();
     }
 
-    protected void Particle()
+    private void Particle()
     {
         for (int i = 0; i < 15; i++)
         {
@@ -174,7 +175,7 @@ public abstract class ParentBrick : MonoBehaviour
     }
 
     protected abstract void Activate();
-    protected void Damage()
+    private void Damage()
     {
         float a = _hp;
         float b = _maxHp;
@@ -186,7 +187,7 @@ public abstract class ParentBrick : MonoBehaviour
             a/b
             
             );
-        _img.color = Color.white;
+        Img.color = Color.white;
     }
 
 }

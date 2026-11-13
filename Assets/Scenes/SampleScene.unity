@@ -10176,9 +10176,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f3875a6c4abb3747b93c5d8534cada5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Palet
-  _perfectTimeThreshold: 0.05
-  _activeTimeThreshold: 0.5
-  _cd: 0.5
+  _perfectTimeThreshold: 0.1
+  _activeTimeThreshold: 0.65
+  _cd: 0.75
   _perfectColor: {r: 0, g: 1, b: 0.9028125, a: 1}
   _activeColor: {r: 1, g: 1, b: 1, a: 1}
   _cdColor: {r: 0.6320754, g: 0, b: 0, a: 1}
