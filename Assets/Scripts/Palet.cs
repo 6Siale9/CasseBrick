@@ -191,7 +191,7 @@ public class Palet : MonoBehaviour
                 break;
         }
         _perfectTimeThreshold = _savedValue;
-        _state = EpaletState.INACTIVE;
+        _state = EpaletState.PERFECT;
         _activeTime = 0;
     }
     #endregion Method

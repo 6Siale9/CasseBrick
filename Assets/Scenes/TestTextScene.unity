@@ -456,7 +456,7 @@ MonoBehaviour:
   - "Hop \xE7a c'est fait"
   - So long
   _timeBetweenLettersThreshold: 0.025
-  _timeBetweenLines: 0.75
+  _timeBetweenLines: 0.5
   _txtUi: {fileID: 535071426}
 --- !u!1 &1491527696
 GameObject:
