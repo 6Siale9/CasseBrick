@@ -10,6 +10,7 @@ Perfect locks to full (?)
 Sounds
 
 Hightscore :    763 (Colin)
+                751 (Auteur)
                 17150 (ordinateur)
 
 
