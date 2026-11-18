@@ -4,22 +4,21 @@ using System.Collections.Generic;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private int _howMany;
-    [SerializeField] private GameObject[] _toSpawn;
-    [SerializeField] private int[] _toSpawnWeight;
-    [SerializeField] private float _spawnTimeThreshold;
-    private float _spawnTime;
-    private bool _canSpawn = true;
+    [SerializeField] private int _howMany; //How many bricks to spawn
+    [SerializeField] private GameObject[] _toSpawn; //Possible bricks to spawn
+    [SerializeField] private Transform _brickParent; //Brick container
+    [SerializeField] private int[] _toSpawnWeight; //Chances of each bricks to be spawned
+    [SerializeField] private float _spawnTimeThreshold; //Time of pause between each spawn
+    private float _spawnTime; //Value
+    private bool _canSpawn = true; //Can resume spawning
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    #region Method
     void Start()
     {
         Move();
         GlobalManager.Instance.Spawners.Add(this);
     }
 
-    // Update is called once per frame
     void Update()
     {
         AdvanceLogic();
@@ -58,7 +57,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private EDirection CheckForDirections()
+    private EDirection CheckForDirections() //Multiple small Raycasts to check if cornered
     {
         LayerMask mask = 0;
         bool up = !Physics2D.Raycast(gameObject.transform.position, Vector3.up, 1.4f);
@@ -93,7 +92,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void Spawn()
+    private void Spawn() // Unsure if correct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     {
         int totalWeight = 0;
         foreach (int i in _toSpawnWeight)
@@ -106,10 +105,12 @@ public class Spawner : MonoBehaviour
         {
             if (random < _toSpawnWeight[slot])
             {
-                Instantiate(_toSpawn[slot], gameObject.transform.position, Quaternion.identity);
+                Instantiate(_toSpawn[slot], gameObject.transform.position, Quaternion.identity, _brickParent);
+                break;
             }
             else
             {
+                random -= _toSpawnWeight[slot];
                 slot++;
             }
         }
@@ -150,14 +151,11 @@ public class Spawner : MonoBehaviour
     private void Wait()
     {
         _canSpawn = false;
-    }
-}
 
-public enum EDirection
-{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    NONE
+
+        // ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+        GlobalManager.Instance.Spawners.Remove(this);
+        Destroy(gameObject);
+    }
+    #endregion Method
 }

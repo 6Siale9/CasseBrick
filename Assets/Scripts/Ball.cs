@@ -1,104 +1,304 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using TMPro;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Ball : MonoBehaviour
 {
-    private Vector2 _up = Vector2.up;
-    private Rigidbody2D _rb;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _maxSpeed;
-    [SerializeField] private GameObject _child;
-    [SerializeField] private int _howManyRays;
-    private List<Ray2D> _rays = new List<Ray2D>(); 
+    #region Attribut
+    [Header("Movement")]
+    [SerializeField] private float _speed; //Speed of the ball
+    [SerializeField] private float _maxSpeed; //Maximum speed after bounces
+    private Vector2 _destination; //Point of Raycast
+    private Vector2 _dir; //Direcction to _destination for stepping
+    private Vector2 _newDir; //Next direction after bounce
+    private Bouncer _target; //Target to activate on bounce
+    private Vector2 _normal; //Normal of _target
+    
+    [Header("StretchAndSquash")]
+    [SerializeField] private GameObject _child; //Object to stretch
+    private Vector2 _squashDir = Vector2.zero; //Orientation of stretch (Wall normal or _dir)
+    
+    [Header("Hitstop")]
+    private bool _stop = true; //Allow the ball to move
+    private float _stopTime = 0; //Value
+    private float _stopTimeThreshold = 999; //Time the ball stops upon colliding
+    [SerializeField] private float _stopTimeThresholdFast = 0; //Value for _stopTimeThreshold for object with fast rebounce
 
+    [Header("SeekingBall")]
+    private int _bounce = 0; //Number of bounces since last collision with a brick
+    [SerializeField] private int _bounceThreshold; //Number of bounces required for SeekingBall()
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Particles")]
+    [SerializeField] private Particle _particle;
+
+    [Header("Other")]
+    [SerializeField] private float _waitAtSpawn; //Time before the ball moves at spawn
+    [SerializeField] private float _shakeThreshold; //Speed needed for cameraShake
+
+    #endregion Attribut
+
+    public float StopTime { get => _stopTime; set => _stopTime = value; }
+    public float StopTimeThreshold { get => _stopTimeThreshold; set => _stopTimeThreshold = value; }
+    public float Speed { get => _speed; set => _speed = value; }
+    public int Bounce { get => _bounce; set => _bounce = value; }
+    public Vector2 NewDir { get => _newDir; set => _newDir = value; }
+    public Bouncer Target { get => _target; set => _target = value; }
+    public float StopTimeThresholdFast { get => _stopTimeThresholdFast; set => _stopTimeThresholdFast = value; }
+    public bool Stop { get => _stop; set => _stop = value; }
+
+    #region Method
     void Start()
     {
-        GlobalManager.Instance.Balls.Add(this);
-        _rb = GetComponent<Rigidbody2D>();
-        //_rb.linearVelocity = _up * _speed;
-        Vector2 v = new Vector2(Random.Range(-1f, 1), 1).normalized * 100;
-        v = new Vector2(1, 1);
-        DrawRays(transform.position, v);
+        Initialize();
     }
 
-    // Update is called once per frame
     void Update()
     {
         ChildTransformLogic();
+        AdvanceLogic();
+        StopLogic();
     }
 
-    private void DrawRays(Vector2 origin, Vector2 direction)
+    #region Logic
+    private void StopLogic()
     {
-        RaycastHit2D[] rcH = Physics2D.RaycastAll(origin, direction);
-        Ray2D r = new Ray2D(origin, direction);
-        _rays.Add(r);
-
-        Vector2 collisionPoint = Vector2.zero;
-        Vector2 reflectedDir = Vector2.zero;
-        if (rcH.Length > 0 && _howManyRays > 0)
+        if (Stop)
         {
-            _howManyRays--;
+            if (_stopTime < _stopTimeThreshold)
+            {
+                _stopTime += Time.deltaTime;
+            }
+            else
+            {
+                _stopTime = 0;
+                Stop = false;
+            }
+        }
+    }
+
+    private void AdvanceLogic()
+    {
+        if (!Stop)
+        {
+            if (transform.position.x == _destination.x && transform.position.y == _destination.y) //Activate if ball is at destination
+            {
+                _squashDir = _normal;
+                Target.Activate();
+                Particle();
+                if (_speed >= _shakeThreshold)
+                {
+                    CameraManager.Instance.CameraShake(_normal);
+                }
+
+                #region Stop
+                if (_bounce == _bounceThreshold -1 && Target.AddBounce)
+                {
+                    _stopTimeThreshold = Mathf.Clamp(Speed * 15f / _maxSpeed, 0f, 4.5f); // Big rebounce for seeking ball ??????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? 
+                    Stop = true;
+                }
+                else if (Target.Stop)
+                {
+                    _stopTimeThreshold = Mathf.Clamp(Speed * 5f / _maxSpeed, 0f, 1.5f); // Pause for long rebounce ?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+                }
+                else
+                {
+                    _stopTimeThreshold = StopTimeThresholdFast; // Pause for fast rebounce
+                }
+                if (_stopTimeThreshold > StopTimeThresholdFast)
+                {
+                    Stop = true;
+                }
+                #endregion Stop
+
+                #region Bounce
+                if (Target.AddBounce)
+                {
+                    Bounce++;
+                }
+                else
+                {
+                    Bounce = 0;
+                }
+
+                if (Bounce < _bounceThreshold)
+                {
+                    NewDest(transform.position, NewDir);
+                }
+                else
+                {
+                    if (GlobalManager.Instance.Bricks.Count != 0)
+                    {
+                        Vector2 origin = transform.position;
+                        Vector2 destination = GlobalManager.Instance.Bricks[Random.Range(0, GlobalManager.Instance.Bricks.Count)].gameObject.transform.position;
+                        Vector2 dir = destination - origin;
+                        NewDest(transform.position, dir);
+                    }
+                    else
+                    {
+                        NewDest(transform.position, NewDir);
+                    }
+                }
+                #endregion Bounce
+            }
+            else
+            {
+                float step = Speed * Time.deltaTime;
+                transform.position = Vector2.MoveTowards(transform.position, _destination, step); // Step
+            }
+        }
+    }
+
+    protected void ChildTransformLogic()
+    {
+        if (!Stop)
+        {
+            _child.transform.up = _dir.normalized;
+            _child.transform.localScale = new Vector3(1, 1 + Speed / 25, 1);
+        }
+        else
+        {
+            _child.transform.up = _squashDir;
+            _child.transform.localScale = new Vector3(2.5f, 1, 1);
+        }
+    }
+    #endregion Logic
+
+    private void Initialize()
+    {
+        GlobalManager.Instance.Ball = this;
+        Vector2 v = new Vector2(Random.Range(-1f, 1), Random.Range(-1f, 1)).normalized * 100;
+        StartCoroutine(WaitAtSpawn(v));
+    }
+
+    private IEnumerator WaitAtSpawn(Vector2 v)
+    {
+        yield return new WaitForSeconds(_waitAtSpawn);
+        NewDest(transform.position, v);
+        Stop = false;
+    }
+
+    private void NewDest(Vector2 origin, Vector2 direction)
+    {
+        _dir = direction;
+        RaycastHit2D[] rcH = Physics2D.CircleCastAll(origin, .01f, direction);
+        Ray2D r = new Ray2D(origin, direction);
+        Vector2 reflectedDir = Vector2.zero;
+        bool center = true;
+        if (rcH.Length > 0)
+        {
             for (int i = 0; i < rcH.Length; i++)
             {
                 Bouncer b = rcH[i].collider.GetComponent<Bouncer>();
                 if (b != null)
                 {
-                    collisionPoint = rcH[i].point;
-                    reflectedDir = Vector2.Reflect(direction, b.transform.up);
-                    break;
+                    float f = Vector2.Distance(rcH[i].point, transform.position);
+                    if (f > 0.02)
+                    {
+                        _destination = rcH[i].point;
+                        _normal = rcH[i].normal;
+                        NewDir = Vector2.Reflect(direction, _normal);
+                        if (Target?.Palet != null)
+                        {
+                            NewDir = Rotate(NewDir, Random.Range(-0.05f, 0.05f));
+                        }
+                        center = false;
+                        Target = b;
+                        break;
+                    }
                 }
             }
-            DrawRays(collisionPoint, reflectedDir);
+            if (center)
+            {
+                GoToCenter();
+            }
         }
         else
         {
-            Finished();
+            GoToCenter();
         }
     }
 
-    private void Finished()
+    public void Rebound()
     {
-        foreach (Ray2D ray in _rays)
-        {
-            Debug.DrawRay(ray.origin, ray.direction, Color.red, 10);
-        }
-        Debug.Log("Finished");
-    }
+        _squashDir = _normal;
+        Target.Activate();
+        Particle();
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Bouncer b = collision.GetComponent<Bouncer>();
-        if (b != null)
+        #region Stop
+        if (_bounce == _bounceThreshold - 1 && Target.AddBounce)
         {
-            if (_speed < _maxSpeed)
+            _stopTimeThreshold = Speed * 30 / _maxSpeed; // Big rebounce for seeking ball ??????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? 
+            Stop = true;
+        }
+        else if (Target.Stop)
+        {
+            _stopTimeThreshold = Speed * 5 / _maxSpeed; // Pause for long rebounce ?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+        }
+        else
+        {
+            _stopTimeThreshold = StopTimeThresholdFast; // Pause for fast rebounce
+        }
+        if (_stopTimeThreshold >= StopTimeThresholdFast)
+        {
+            Stop = true;
+        }
+        #endregion Stop
+
+        #region Bounce
+        if (Target.AddBounce)
+        {
+            Bounce++;
+        }
+        else
+        {
+            Bounce = 0;
+        }
+
+        if (Bounce < _bounceThreshold)
+        {
+            NewDest(transform.position, NewDir);
+        }
+        else
+        {
+            if (GlobalManager.Instance.Bricks.Count != 0)
             {
-                _speed += 0.3f;
-                _speed = Mathf.Clamp(_speed, 0, _maxSpeed);
+                Vector2 origin = transform.position;
+                Vector2 destination = GlobalManager.Instance.Bricks[Random.Range(0, GlobalManager.Instance.Bricks.Count)].gameObject.transform.position;
+                Vector2 dir = destination - origin;
+                NewDest(transform.position, dir);
             }
-            float f = Vector2.Angle(_rb.linearVelocity, b.RightAngle);
-            Vector2 vector = Vector2.Reflect(_rb.linearVelocity, b.RightAngle).normalized * _speed;
-            vector = Rotate(vector, Random.Range(-0.1f, 0.1f));
-            _rb.linearVelocity = vector;
-            b.Activate();
+            else
+            {
+                NewDest(transform.position, NewDir);
+            }
+        }
+        #endregion Bounce
+    }
+
+    private void GoToCenter() //Failsafe method if Raycast fails to get out of a corner
+    {
+        Vector2 origin = transform.position;
+        Vector2 dir = new Vector2(0, 0) - origin;
+
+        NewDest(origin, dir);
+    }
+
+    private void Particle()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            Particle p = Instantiate(_particle, transform.position, Quaternion.identity);
+            p.MaxForce = 200f;
+            p.MinForce = 20f;
         }
     }
 
-    private void ChildTransformLogic()
-    {
-        _child.transform.up = _rb.linearVelocity.normalized;
-        _child.transform.localScale = new Vector3(1, 1 + _speed/15, 1);
-    }
-
-    public void SeekingBall(ParentBrick brick)
-    {
-        Vector2 origin = gameObject.transform.position;
-        Vector2 target = brick.gameObject.transform.position;
-        Vector2 dir = target - origin;
-        _rb.linearVelocity = dir.normalized * _speed;
-    }
-
+    #region Tool
     private Vector2 Rotate(Vector2 v, float delta)
     {
         return new Vector2(
@@ -106,4 +306,17 @@ public class Ball : MonoBehaviour
             v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
         );
     }
+
+    public void BrickFast()
+    {
+        StartCoroutine(EndFrame());
+    }
+
+    private IEnumerator EndFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        _stopTimeThreshold = _stopTimeThresholdFast;
+    }
+    #endregion Tool
+    #endregion Method
 }
