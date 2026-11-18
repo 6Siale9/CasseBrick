@@ -145,7 +145,7 @@ public abstract class ParentBrick : MonoBehaviour
             #endregion A
         }
     }
-    public void TakeDamage()
+    public void TakeDamage(bool activate)
     {
         if (_hp > 1)
         {
@@ -160,7 +160,10 @@ public abstract class ParentBrick : MonoBehaviour
             Destroy(gameObject);
             GlobalManager.Instance.AllSpawnerMove();
         }
-        Activate();
+        if (activate)
+        {
+            Activate();
+        }
     }
 
     private void Particle()

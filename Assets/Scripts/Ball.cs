@@ -49,6 +49,7 @@ public class Ball : MonoBehaviour
     public Vector2 NewDir { get => _newDir; set => _newDir = value; }
     public Bouncer Target { get => _target; set => _target = value; }
     public float StopTimeThresholdFast { get => _stopTimeThresholdFast; set => _stopTimeThresholdFast = value; }
+    public bool Stop { get => _stop; set => _stop = value; }
 
     #region Method
     void Start()
@@ -66,7 +67,7 @@ public class Ball : MonoBehaviour
     #region Logic
     private void StopLogic()
     {
-        if (_stop)
+        if (Stop)
         {
             if (_stopTime < _stopTimeThreshold)
             {
@@ -75,14 +76,14 @@ public class Ball : MonoBehaviour
             else
             {
                 _stopTime = 0;
-                _stop = false;
+                Stop = false;
             }
         }
     }
 
     private void AdvanceLogic()
     {
-        if (!_stop)
+        if (!Stop)
         {
             if (transform.position.x == _destination.x && transform.position.y == _destination.y) //Activate if ball is at destination
             {
@@ -98,7 +99,7 @@ public class Ball : MonoBehaviour
                 if (_bounce == _bounceThreshold -1 && Target.AddBounce)
                 {
                     _stopTimeThreshold = Mathf.Clamp(Speed * 15f / _maxSpeed, 0f, 4.5f); // Big rebounce for seeking ball ??????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? 
-                    _stop = true;
+                    Stop = true;
                 }
                 else if (Target.Stop)
                 {
@@ -108,9 +109,9 @@ public class Ball : MonoBehaviour
                 {
                     _stopTimeThreshold = StopTimeThresholdFast; // Pause for fast rebounce
                 }
-                if (_stopTimeThreshold >= StopTimeThresholdFast)
+                if (_stopTimeThreshold > StopTimeThresholdFast)
                 {
-                    _stop = true;
+                    Stop = true;
                 }
                 #endregion Stop
 
@@ -154,7 +155,7 @@ public class Ball : MonoBehaviour
 
     protected void ChildTransformLogic()
     {
-        if (!_stop)
+        if (!Stop)
         {
             _child.transform.up = _dir.normalized;
             _child.transform.localScale = new Vector3(1, 1 + Speed / 25, 1);
@@ -178,7 +179,7 @@ public class Ball : MonoBehaviour
     {
         yield return new WaitForSeconds(_waitAtSpawn);
         NewDest(transform.position, v);
-        _stop = false;
+        Stop = false;
     }
 
     private void NewDest(Vector2 origin, Vector2 direction)
@@ -201,7 +202,10 @@ public class Ball : MonoBehaviour
                         _destination = rcH[i].point;
                         _normal = rcH[i].normal;
                         NewDir = Vector2.Reflect(direction, _normal);
-                        NewDir = Rotate(NewDir, Random.Range(-0.1f, 0.1f));
+                        if (Target?.Palet != null)
+                        {
+                            NewDir = Rotate(NewDir, Random.Range(-0.05f, 0.05f));
+                        }
                         center = false;
                         Target = b;
                         break;
@@ -229,7 +233,7 @@ public class Ball : MonoBehaviour
         if (_bounce == _bounceThreshold - 1 && Target.AddBounce)
         {
             _stopTimeThreshold = Speed * 30 / _maxSpeed; // Big rebounce for seeking ball ??????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????? 
-            _stop = true;
+            Stop = true;
         }
         else if (Target.Stop)
         {
@@ -241,7 +245,7 @@ public class Ball : MonoBehaviour
         }
         if (_stopTimeThreshold >= StopTimeThresholdFast)
         {
-            _stop = true;
+            Stop = true;
         }
         #endregion Stop
 
@@ -297,10 +301,21 @@ public class Ball : MonoBehaviour
     #region Tool
     private Vector2 Rotate(Vector2 v, float delta)
     {
-        return v; new Vector2(
+        return new Vector2(
             v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta),
             v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta)
         );
+    }
+
+    public void BrickFast()
+    {
+        StartCoroutine(EndFrame());
+    }
+
+    private IEnumerator EndFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        _stopTimeThreshold = _stopTimeThresholdFast;
     }
     #endregion Tool
     #endregion Method

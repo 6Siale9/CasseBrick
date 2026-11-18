@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1295406486532100526}
-  - component: {fileID: 8694795747370315172}
+  - component: {fileID: -5481789445427964408}
   - component: {fileID: 1807121050215066472}
   - component: {fileID: 2317699628794892714}
   m_Layer: 0
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 5121755511601392201}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8694795747370315172
+--- !u!114 &-5481789445427964408
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,9 +44,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1394653593359363371}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89c47372f74cec245a1ce14ea7055b91, type: 3}
+  m_Script: {fileID: 11500000, guid: 843bf9b9b84fa5d488eb5f5aa058610a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BrickSimple
+  m_EditorClassIdentifier: Assembly-CSharp::BrickFast
   _hp: 1
   _img: {fileID: 7123750820716451189}
   _color: {r: 0.5, g: 0, b: 0, a: 1}
@@ -63,9 +63,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a97de7854e3bc3340b013ce1a66a8e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bouncer
-  _brick: {fileID: 8694795747370315172}
+  _brick: {fileID: -5481789445427964408}
   _palet: {fileID: 0}
-  _stop: 0
+  _stop: 1
   _addBounce: 0
 --- !u!61 &2317699628794892714
 BoxCollider2D:

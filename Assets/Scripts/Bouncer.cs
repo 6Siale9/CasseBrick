@@ -15,7 +15,7 @@ public class Bouncer : MonoBehaviour
     {
         if (_brick != null)
         {
-            _brick.TakeDamage();
+            _brick.TakeDamage(true);
         }
         else if (Palet != null)
         {
