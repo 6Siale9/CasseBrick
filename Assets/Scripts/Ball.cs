@@ -39,6 +39,7 @@ public class Ball : MonoBehaviour
     [Header("Other")]
     [SerializeField] private float _waitAtSpawn; //Time before the ball moves at spawn
     [SerializeField] private float _shakeThreshold; //Speed needed for cameraShake
+    [SerializeField] private DownVisual _downVisual; //Object for BrickDown activation
 
     #endregion Attribut
 
@@ -310,6 +311,11 @@ public class Ball : MonoBehaviour
     public void BrickFast()
     {
         StartCoroutine(EndFrame());
+    }
+
+    public void BrickDown()
+    {
+        _downVisual.Activate(transform.position);
     }
 
     private IEnumerator EndFrame()

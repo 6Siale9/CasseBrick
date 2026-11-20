@@ -9,9 +9,9 @@ Bar retracts
 Perfect locks to full (?)
 Sounds
 
-Hightscore :    763 (Colin)
-                751 (Auteur)
-                17150 (ordinateur)
+Hightscore :    526 (Colin)
+                1125 (Auteur)
+                9152 (ordinateur)
 
 
 Faire des post mortem dans les rendus
